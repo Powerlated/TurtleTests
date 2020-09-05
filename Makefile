@@ -1,18 +1,23 @@
 ASM=rgbasm -i src/common
 
-all: src/window_y_trigger/window_y_trigger.gb
+gb = src/window_y_trigger/window_y_trigger.gb
+
+all: $(gb)
 
 ags-aging-font.chr:
 	rgbgfx src/common/ags-aging-font.png -o src/common/ags-aging-font.chr
 
-src/window_y_trigger/window_y_trigger.gb: ags-aging-font.chr .FORCE
-	$(ASM) src/window_y_trigger/window_y_trigger.asm -o src/window_y_trigger/window_y_trigger.o
-	rgblink src/window_y_trigger/window_y_trigger.o -o src/window_y_trigger/window_y_trigger.gb
-	rgbfix -v -p 0 src/window_y_trigger/window_y_trigger.gb
+%.o: %.asm ags-aging-font.chr
+	$(ASM) -o $@ $< 
+
+$(gb): %.gb: %.o .FORCE
+	rgblink -o $@ $<
+	rgbfix -v -p 0 $@
 
 # Always force a clean rebuild, this is Game Boy assembly, builds are fast.
 .PHONY: .FORCE
 
+.PHONY: clean
 clean:
 	rm GB/window_y_trigger/window_y_trigger.o
 	rm GB/window_y_trigger/window_y_trigger.gb
