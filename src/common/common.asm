@@ -6,7 +6,7 @@ SECTION "Common", ROMX, BANK[1]
 DisableLCD:
     ; If the LCDC is already disabled, return.
     ld a, [rLCDC]
-    and a, %00000001
+    and a, %10000000
     ret z
 .loop:
 
