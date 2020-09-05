@@ -111,7 +111,7 @@ PassText:
 
 MainText: 
     db "1 LY=WY Trigger\n"
-    db "2 Offscreen Test\n"
+    db "2 WX Offscreen Test\n"
     db "3\n"
     db "4 The numbers 1-18\n"
     db "5 should be visible\n"

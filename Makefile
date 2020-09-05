@@ -1,6 +1,6 @@
 ASM=rgbasm -i src/common
 
-gb = src/window_y_trigger/window_y_trigger.gb src/window_y_trigger_offscreen/window_y_trigger_offscreen.gb
+gb = src/window_y_trigger/window_y_trigger.gb src/window_y_trigger_wx_offscreen/window_y_trigger_wx_offscreen.gb
 
 all: $(gb)
 
@@ -21,7 +21,7 @@ $(gb): %.gb: %.o .FORCE
 clean:
 	rm src/window_y_trigger/window_y_trigger.o
 	rm src/window_y_trigger/window_y_trigger.gb
-	rm src/window_y_trigger_offscreen/window_y_trigger_offscreen.o
-	rm src/window_y_trigger_offscreen/window_y_trigger_offscreen.gb
+	rm src/window_y_trigger_wx_offscreen/window_y_trigger_wx_offscreen.o
+	rm src/window_y_trigger_wx_offscreen/window_y_trigger_wx_offscreen.gb
 	rm src/common/ags-aging-font.chr
 
