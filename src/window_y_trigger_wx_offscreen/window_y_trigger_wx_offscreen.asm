@@ -67,8 +67,8 @@ TestScreen:
     ei
 
     ; set STAT IRQ jump vector
-    ld hl, MoveWindow
-    ld a, 56
+    ld hl, MoveWY
+    ld a, 13
     ld [rLYC], a
 
     ld a, IEF_LCDC | IEF_VBLANK
@@ -78,18 +78,37 @@ TestScreen:
     halt
     jr .rehalt
 
+; Test that Window Y stays triggered even after WY is moved somewhere else
+; LY=13
+MoveWY:
+    ld a, 144
+    ld [rWY], a
+
+    ld hl, MoveWindow
+    ld a, 56
+    ld [rLYC], a
+    reti
+
+; LY=56
 MoveWindow:
     ld a, 0
     ld [rWY], a
     ld a, 7
-    ld [rWX], a 
+    ld [rWX], a
     reti
 
 Vblank:
+    ; Set Window Y Trigger to 12
     ld a, 12
     ld [rWY], a
     ld a, 167
     ld [rWX], a
+
+    ; reset STAT IRQ jump vector
+    ld hl, MoveWY
+    ld a, 13
+    ld [rLYC], a
+
     reti
 
 SECTION "Font", ROMX
