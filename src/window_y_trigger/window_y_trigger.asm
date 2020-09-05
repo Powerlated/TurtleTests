@@ -6,10 +6,7 @@ Section "VBLANK ISR", ROM0[$40]
     reti
 
 Section "STAT ISR", ROM0[$48]
-    ; Return colors to normal after title bar
-    ld a, 0
-    ld [rWY], a
-    reti
+    jp hl
 
 SECTION "Start", ROM0[$0100]
 Entrypoint:
@@ -63,23 +60,34 @@ TestScreen:
     ld a, 0
     ld [rWY], a
 
-    ld a, 56
-    ld [rLYC], a
-
     ld a, STATF_LYC
     ld [rSTAT], a
+
+    ei
+
+    ; set STAT IRQ jump vector
+    ld hl, MoveWY
+    ld a, 56
+    ld [rLYC], a
 
     ld a, IEF_LCDC | IEF_VBLANK
     ld [rIE], a
 
-    ei
+.rehalt:
+    halt
+    jr .rehalt
 
-.loop:
-    jr .loop
+
+MoveWY:
+    ld a, 0
+    ld [rWY], a
+    reti
+
+    
 
 
 SECTION "Font", ROMX
-Font: INCBIN "src/window_y_trigger/ags-aging-font.chr"
+Font: INCBIN "ags-aging-font.chr"
 
 SECTION "Text", ROMX
 FailText:
